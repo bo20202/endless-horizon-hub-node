@@ -10,8 +10,7 @@ chai.use(chaiHttp)
 
 describe('Players', () => {
     beforeEach((done) =>{
-        models.ban.sync().then(() => {
-        Player.sync({force: true}).then(() => {
+        models.sequelize.sync({force: true, logging: console.log}).then(() => {
             let playerNotAdminSchema = {
                 ckey: "not_admin",
                 registered: Date.now(),
@@ -39,7 +38,7 @@ describe('Players', () => {
             }).catch((err) => done(err))
             
         })
-    }).catch((err) => done(err))
+        .catch((err) => done(err))
 })
 
     describe('/GET admins', () => {
