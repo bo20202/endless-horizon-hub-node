@@ -1,0 +1,1 @@
+find . -path ./node_modules -prune -o -type f -name "*.js" -exec js-beautify -t {} \;     
