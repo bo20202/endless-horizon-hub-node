@@ -12,7 +12,7 @@ const BanApi = {
                       {model: Player, as: 'unbanned_by', attributes: ['ckey']}]
         }).then((bans) => {
             res.json({status: 'OK', bans})
-        })
+        }).catch((error) => res.status(400).json({errors: {title: 'Data not found!'}}))
     },
     
     getBan(req, res) {
