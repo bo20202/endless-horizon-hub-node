@@ -21,6 +21,13 @@ module.exports = (db) => {
                 Ban.belongsTo(models.player, {as: 'banned_by'})
                 Ban.belongsTo(models.player, {as: 'unbanned_by'})
             }
+        },
+        instanceMethods: {
+            unban(){
+                this.unbanned = 1
+                this.unbannedTime = Date.now()
+                //TODO: SET UNBANNED BY
+            }
         }
     })
     return Ban

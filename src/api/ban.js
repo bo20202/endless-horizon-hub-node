@@ -12,6 +12,13 @@ const BanApi = {
         })
     },
     
+    getBan(req, res) {
+        let id = req.body.id
+        Ban.findById(id, {attributes: {exlude: ['ip', 'cid']}}).then((ban) => {
+            res.json({status: 'OK', ban})
+        })
+    },
+    
     editBan(req, res) {
         let id = req.body.id
         let reason = req.body.reason
