@@ -24,7 +24,7 @@ const BanApi = {
                       {model: Player, as: 'unbanned_by', attributes: ['ckey']}]
         }).then((ban) => {
             res.json({status: 'OK', ban})
-        })
+        }).catch((error) => res.status(400).json({errors: {title: 'Data not found!'}}))
     },
     
     editBan(req, res) {
@@ -51,7 +51,9 @@ const BanApi = {
     
     addBan(req, res) {
         let ban = req.body.ban
-        Ban.create(ban).then
+        Ban.create(ban).then((ban) => {
+            res.json({status: 'OK', ban})
+        }).catch((error) => res.status(400).json({errors: {title: 'Error saving!'}}))
     } 
 }
 
