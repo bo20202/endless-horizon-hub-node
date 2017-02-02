@@ -1,16 +1,16 @@
 const models = require("../models")
 const Player = models.player
 
-class AdminApi {
-    static getAdmins(req, res){
+const AdminApi = {
+    getAdmins(req, res){
         Player.findAll({where: {rank: {$ne: 'player'}}, attributes:['id', 'ckey', 'rank', 'flags']}).then((admins) => {
-            res.json(admins)
+            res.json({status: 'OK', admins})
         }).catch((error) => {
             res.status(400).json({errors: {title: "Fetching error", detail: error}})
         })
-    }
+    },
     
-    static editAdminRights(req, res){
+    editAdminRights(req, res){
         let id = req.params.id
         let rank = req.body.rank
         let flags = req.body.flags
@@ -34,10 +34,10 @@ class AdminApi {
         }).catch((error) => {
             res.status(400).json({errors: {title: "Fetching error", detail: error}})
         })
-    }
+    },
 
     
-    static removeAdmin(req, res){
+    removeAdmin(req, res){
         let id = req.params.id
         Player.findById(id).then((player) => {
             player.deadmin()
@@ -48,8 +48,14 @@ class AdminApi {
             res.status(400)
             res.json({errors: {title: 'Data not found!', detail: err}})
         })
+    },
+    
+    showAdmin(req, res){
+        let id = req.params.id
+        Player.findById(id, {attributes: ['id', 'ckey', 'rank', 'flags']}).then((player) => {
+            res.json({status: 'OK', player})
+        })
     }
-    static showAdmin(req, res){}
     
 }
 
