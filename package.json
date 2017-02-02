@@ -7,19 +7,20 @@
     "test": "mocha --timeout 9999"
   },
   "dependencies": {
+    "autofixture": "^0.1.6",
     "body-parser": "~1.15.2",
+    "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.14.0",
     "jade": "~1.11.0",
     "less-middleware": "~2.2.0",
+    "mocha": "^3.2.0",
     "morgan": "~1.7.0",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.0",
-    "serve-favicon": "~2.3.0",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
