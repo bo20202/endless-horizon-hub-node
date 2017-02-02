@@ -14,5 +14,7 @@ router.patch('/admins/:id', AdminApi.editAdminRights)
 /* bans section */
 router.get('/bans/', BanApi.getBans)
 router.get('/bans/:id', BanApi.getBan)
+router.patch('/bans/:id', BanApi.editBan)
+router.post('/bans/', BanApi.addBan)
 
 module.exports = router
