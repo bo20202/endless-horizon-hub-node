@@ -17,9 +17,9 @@ module.exports = (db) => {
     let Ban = db.define('ban', banSchema, {
         classMethods: {
             associate(models){
-                Ban.belongsTo(models.player, {as: 'target'})
-                Ban.belongsTo(models.player, {as: 'banned_by'})
-                Ban.belongsTo(models.player, {as: 'unbanned_by'})
+                Ban.belongsTo(models.player, {as: 'target', foreignKey: 'target_id'})
+                Ban.belongsTo(models.player, {as: 'bannedBy', foreignKey: 'banned_by_id'})
+                Ban.belongsTo(models.player, {as: 'unbannedBy', foreignKey: 'unbanned_by_id'})
             }
         },
         instanceMethods: {
