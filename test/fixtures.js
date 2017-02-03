@@ -8,7 +8,7 @@ factory.define('Player', [
     'ip',
     'cid',
     'rank',
-    'flags'.asNumber
+    'flags'.asNumber()
 ])
 
 factory.define('Ban', [

@@ -15,45 +15,50 @@ const AdminApi = {
         let rank = req.body.rank
         let flags = req.body.flags
         
-        Player.findById(id, {attributes: ['id', 'ckey', 'rank', 'flags']}).then((player) => {
-            if(player){
-             player.editAdminRights(rank, flags) //instance method of player model
-             player.save().then(() => {
-                 res.json({status: 'OK', player})
-             }).catch((error) => {
-                 res.status(400).json({errors: {title: "Saving error", detail: error}})
-             })
-        }
-        else{
-            let responce = {
-                errors: {title: 'Data not found!'}
-            }
-            res.status(400).json(responce)
-        }
-        
-        }).catch((error) => {
-            res.status(400).json({errors: {title: "Fetching error", detail: error}})
+        Player.findById(id, {attributes: ['id', 'ckey', 'rank', 'flags']})
+        .then(player => {
+            if(!player)
+                throw "Data not found!"
+            player.editAdminRights(rank, flags)
+            return player.save()
         })
+        .then(player => {
+            res.json({status: 'OK', player})
+        })
+        .catch(error => {
+            res.status(400).json(error)
+        })
+        
     },
 
     
     removeAdmin(req, res){
         let id = req.params.id
-        Player.findById(id).then((player) => {
+        Player.findById(id)
+        .then(player => {
+            if(!player)
+                throw "Data not found!"
             player.deadmin()
-            player.save().then(() => {
-                res.json({status: 'OK', player})
-            })
-        }).catch((err) =>{
-            res.status(400)
-            res.json({errors: {title: 'Data not found!', detail: err}})
+            return player.save()
+        })
+        .then(player => {
+            res.json({status: 'OK'})
+        })
+        .catch(error => {
+            res.status(400).json({error})
         })
     },
     
     showAdmin(req, res){
         let id = req.params.id
-        Player.findById(id, {attributes: ['id', 'ckey', 'rank', 'flags']}).then((player) => {
+        Player.findById(id, {attributes: ['id', 'ckey', 'rank', 'flags'], where: {rank: {$ne: 'player'}}})
+        .then(player => {
+            if(!player)
+                throw "Data not found!"
             res.json({status: 'OK', player})
+        })
+        .catch(error => {
+            res.status(404).json({error})
         })
     }
     
