@@ -56,6 +56,20 @@ describe('Bans', () => {
             })
             .catch(err => {done(err)})
         })
+        it('should search by query', done => {
+            chai.request(app).get("/api/bans?admin_ckey=banner")
+            .then(res => {
+                assert.equal(res.body.bans.length, 1)
+                assert.equal(res.body.bans[0].bannedBy.ckey, 'banner')
+                return chai.request(app).get("/api/bans?admin_ckey=banner&reason=" + this.ban.reason)
+            })
+            .then(res => {
+                assert.equal(res.body.bans.length, 1)
+                assert.equal(res.body.bans[0].reason, this.ban.reason)
+                done()
+            })
+            .catch(err => {console.log(err); done(err)})
+        })
     })
     
     describe('GET /bans/:id', () => {
@@ -68,7 +82,7 @@ describe('Bans', () => {
                 assert.equal(res.body.ban.target.ckey, this.banned.ckey)
                 done()
             })
-            .catch(err => done(err))
+            .catch(err => {console.log(err); done(err)})
         })
         it('should return an error if id is wrong', done => {
             chai.request(app).get('/api/bans/WRONG').end((err, res) => {
@@ -77,6 +91,7 @@ describe('Bans', () => {
                 done()
             })
         })
+        
     })
     
     describe('PATCH /bans/:id', () => {

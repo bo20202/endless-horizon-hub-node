@@ -4,18 +4,14 @@ const Player = models.player
 
 const BanApi = {
     getBans(req, res) {
-        Ban.findAll({
-            attributes: {exclude: ['ip', 'cid']},
-            order: [['time', 'DESC']],
-            include: [{model: Player, as: 'target', attributes:['ckey']},
-                      {model: Player, as: 'bannedBy', attributes: ['ckey']},
-                      {model: Player, as: 'unbannedBy', attributes: ['ckey']}]
-        })
+        let query = queryBuilder(req.query.params)
+        Ban.findAll(query)
         .then((bans) => {
             res.json({status: 'OK', bans})
         }, err => {throw "Data not found!"})
         .catch((error) => res.status(400).json({error}))
     },
+    
     
     getBan(req, res) {
         let id = req.params.id
@@ -68,6 +64,26 @@ const BanApi = {
         }, error => {throw "Saving error!"})
         .catch((error) => res.status(400).json({error}))
     } 
+}
+
+function queryBuilder(params){
+    let query = {
+        attributes: {exclude: ['ip', 'cid']},
+        order: [['time', 'DESC']],
+        include: [        {model: Player, as: 'target', attributes:['ckey']},
+                          {model: Player, as: 'bannedBy', attributes: ['ckey']},
+                          {model: Player, as: 'unbannedBy', attributes: ['ckey']}]
+    }
+    if(!params)
+        return query
+    if(params.reason)
+        query.where = {reason: params.reason}
+    if(params.admin_ckey)
+        query.include[1].where = {ckey: params.admin_ckey}
+    if(params.ckey)
+        query.include[0].where = {ckey: params.ckey}
+        
+    return query
 }
 
 module.exports = BanApi
