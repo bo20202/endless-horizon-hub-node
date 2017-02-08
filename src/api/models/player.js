@@ -31,8 +31,8 @@ module.exports = (db) => {
                 this.flags = flags
                 this.rank = rank
             },
-            validatePassword(){
-                
+            validatePassword(pass){
+                return bcrypt.compare(pass, this.password)
             }
             
         },
