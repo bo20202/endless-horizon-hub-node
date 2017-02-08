@@ -11,7 +11,14 @@ module.exports = (db) => {
         cid:        {type: Sequelize.STRING},
         rank:       {type: Sequelize.STRING, defaultValue: 'player'},
         flags:      {type: Sequelize.INTEGER, defaultValue: 0},
-        password:   {type: Sequelize.STRING, allowNull: true}
+        password:   {type: Sequelize.STRING}
+    }
+    
+    function hashPass (instance) {
+        if(!instance.changed('password')) return
+        return bcrypt.hash(instance.password, 10)
+               .then(hash => {instance.password = hash})
+               .catch(err => {throw err})
     }
     
     let Player = db.define('player', playerSchema ,{
@@ -24,6 +31,9 @@ module.exports = (db) => {
                 this.flags = flags
                 this.rank = rank
             },
+            validatePassword(){
+                
+            }
             
         },
         classMethods: {
@@ -34,6 +44,8 @@ module.exports = (db) => {
             }
         }
     })
+    Player.beforeCreate(hashPass)
+    Player.beforeUpdate(hashPass)
     
     return Player
 

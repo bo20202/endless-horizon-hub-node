@@ -8,7 +8,8 @@ factory.define('Player', [
     'ip',
     'cid',
     'rank',
-    'flags'.asNumber()
+    'flags'.asNumber(),
+    'password'
 ])
 
 factory.define('Ban', [
