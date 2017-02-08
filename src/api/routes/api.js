@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
-const AdminApi = require("../api/admin")
-const BanApi = require("../api/ban")
+const AdminApi = require("../controllers/admin")
+const BanApi = require("../controllers/ban")
 
 
 /* admins section */

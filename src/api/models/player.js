@@ -1,5 +1,6 @@
 module.exports = (db) => {
     const Sequelize = require("sequelize")
+    const bcrypt = require("bcrypt")
     const playerSchema = 
     {
         ckey:       {type: Sequelize.STRING, unique: true},
@@ -9,7 +10,8 @@ module.exports = (db) => {
         ip:         {type: Sequelize.STRING},
         cid:        {type: Sequelize.STRING},
         rank:       {type: Sequelize.STRING, defaultValue: 'player'},
-        flags:      {type: Sequelize.INTEGER, defaultValue: 0}
+        flags:      {type: Sequelize.INTEGER, defaultValue: 0},
+        password:   {type: Sequelize.STRING, allowNull: true}
     }
     
     let Player = db.define('player', playerSchema ,{
@@ -21,7 +23,8 @@ module.exports = (db) => {
             editAdminRights(rank, flags){
                 this.flags = flags
                 this.rank = rank
-            }
+            },
+            
         },
         classMethods: {
             associate(models) {
