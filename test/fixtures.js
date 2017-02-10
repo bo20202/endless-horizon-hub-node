@@ -26,4 +26,9 @@ factory.define('Ban', [
     'unbannedTime'.asDate()
 ])
 
+factory.define('User', [
+    'login',
+    'password'
+])
+
 module.exports = factory

@@ -5,7 +5,7 @@ module.exports = (db) => {
     {
         login: {type: Sequelize.STRING, unique: true},
         password: {type: Sequelize.STRING},
-        registered: {type: Sequelize.DATEONLY},
+        registered: {type: Sequelize.DATEONLY, allowNull: true},
         role: {type: Sequelize.STRING, defaultValue: 'user'}
     }
     
@@ -17,6 +17,11 @@ module.exports = (db) => {
                .catch(err => {throw err})
     }
     
+    function setRegDate(instance) {
+        instance.registered = Date.now()
+        instance.save()
+    }
+    
     let User = db.define('user', userSchema, {
         instanceMethods: {
             validatePassword(pass){
@@ -26,6 +31,7 @@ module.exports = (db) => {
     })
     
     User.beforeCreate(hashPass)
+    User.beforeCreate(setRegDate)
     User.beforeUpdate(hashPass)
     return User
 }
