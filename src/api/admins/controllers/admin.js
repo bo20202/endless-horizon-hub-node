@@ -1,4 +1,5 @@
-const models = require("../../models")
+const path = require("path")
+const models = require(path.resolve('src/models'))
 const Player = models.player
 
 const AdminApi = {
