@@ -1,5 +1,5 @@
 process.env.NODE_ENV = 'test'
-const models = require("../src/api/models")
+const models = require("../src/models")
 const Player = models.player
 const chai = require("chai")
 const chaiHttp = require("chai-http")

@@ -27,4 +27,5 @@ module.exports = (db) => {
     
     User.beforeCreate(hashPass)
     User.beforeUpdate(hashPass)
+    return User
 }
