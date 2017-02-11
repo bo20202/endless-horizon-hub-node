@@ -21,7 +21,13 @@ describe('Users', () => {
             User.create(userFixt)
             .then(user => {
                 assert.notEqual(user.password, userFixt.password)
-                done()
+                user.validatePassword(userFixt.password)
+                .then(res => {
+                    assert(res)
+                    done()
+                })
+                .catch(err => done(err))
+                
             })
             .catch(err => done(err))
         })
