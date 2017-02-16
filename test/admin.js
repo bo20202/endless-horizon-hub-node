@@ -6,6 +6,7 @@ const chaiHttp = require("chai-http")
 const app = require("../app")
 const factory = require("./fixtures")
 const assert = chai.assert
+const jwt = require("jsonwebtoken").sign({id: 1}, 's0m3f1x3s')
 
 chai.use(chaiHttp)
 
@@ -24,6 +25,7 @@ describe('Players', () => {
     describe('/GET admins', () => {
        it('should get all admins (not players!)', (done) => {
             chai.request(app).get('/api/admins')
+                             .set('Authorization', 'JWT ' + jwt)
             .then(res => {
                assert.equal(res.status, 200)
                assert.isArray(res.body.admins)
@@ -40,6 +42,7 @@ describe('Players', () => {
         
         it('should not get sensitive fields (cid, ip)', (done) =>{
             chai.request(app).get('/api/admins')
+                             .set('Authorization', 'JWT ' + jwt)
             .then(res => {
                 assert.equal(res.status, 200)
                 assert.equal(res.body.admins.length, 1)
@@ -57,6 +60,7 @@ describe('Players', () => {
     describe('DELETE /admins/:id', () => {
         it('should set rank and flags to default', (done) => {
             chai.request(app).delete('/api/admins/1')
+                             .set('Authorization', 'JWT ' + jwt)
             .then((res) => {
                 assert.equal(res.body.status, 'OK')
                 return Player.findById(1)
@@ -70,7 +74,10 @@ describe('Players', () => {
         })
             
         it('should return an error if id is not presented', (done) => {
-            chai.request(app).delete('/api/admins/10').end((err, res) => {
+            chai.request(app).delete('/api/admins/10')
+            .set('Authorization', 'JWT ' + jwt)
+            .end((err, res) => {
+                             
                 assert(res.status === 400)
                 assert.equal(res.body.error, 'Data not found!')
                 done()
@@ -94,7 +101,8 @@ describe('Players', () => {
             let id = 1
             let rank = 'changed rank'
             let flags = 1337
-            chai.request(app).patch('/api/admins/' + id).send({rank, flags})
+            chai.request(app).patch('/api/admins/' + id).set('Authorization', 'JWT ' + jwt).send({rank, flags})
+                                                        
             .then(res => {
                 assert.equal(res.body.status, 'OK')
                 assert.equal(res.body.player.rank, rank)
