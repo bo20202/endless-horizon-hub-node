@@ -1,19 +1,19 @@
 const perms = {
     bans: {
         create: "can_create_bans",
-        read: "can_read_bans",
+        read:   "can_read_bans",
         update: "can_update_bans",
         delete: "can_delete_bans",
     },
     admins: {
         create: "can_create_admins",
-        read: "can_read_admins",
+        read:   "can_read_admins",
         update: "can_update_admins",
-        delete: "can_update_admins",
+        delete: "can_delete_admins",
     },
     users: {
         create: "can_create_users",
-        read: "can_read_users",
+        read:   "can_read_users",
         update: "can_update_users",
         delete: "can_delete_users",
     }
@@ -34,5 +34,7 @@ const ranks = {
     user: [perms.bans.read, perms.admins.read]
 }
 
-module.roles = ranks
-module.permissions = perms
+module.exports = {
+    roles: ranks,
+    permissions: perms
+}
