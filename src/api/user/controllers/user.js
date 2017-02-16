@@ -15,7 +15,7 @@ module.exports = {
     },
     
     getUser(req, res) {
-        let id = req.body.id
+        let id = req.params.id
         User.findById(id, {exclude: ['password']})
         .then(user => {
             res.json({status: 'OK', user})
@@ -32,10 +32,18 @@ module.exports = {
     },
     
     deleteUser(req, res) {
-        let id = req.body.id
+        let id = req.params.id
         User.destroy({where: {id}})
         .then(res => {
             res.json({status: 'OK', message: `${res} rows affected`})
+        })
+        .catch(error => res.status(500).json({error}))
+    },
+    
+    getUsers(req, res) {
+        User.findAll({exclude: ['password', 'registered']})
+        .then(users => {
+            res.json(users)
         })
         .catch(error => res.status(500).json({error}))
     }
