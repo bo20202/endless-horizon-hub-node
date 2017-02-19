@@ -8,7 +8,8 @@ factory.define('Player', [
     'ip',
     'cid',
     'rank',
-    'flags'.asNumber()
+    'flags'.asNumber(),
+    'password'
 ])
 
 factory.define('Ban', [
@@ -23,6 +24,11 @@ factory.define('Ban', [
     'expirationTime'.asNumber(),
     'unbanned'.pickFrom([0, 1]),
     'unbannedTime'.asDate()
+])
+
+factory.define('User', [
+    'login',
+    'password'
 ])
 
 module.exports = factory

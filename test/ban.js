@@ -7,6 +7,7 @@ const chaiHttp = require("chai-http")
 const app = require("../app")
 const factory = require("./fixtures")
 const assert = chai.assert
+const jwt = require("jsonwebtoken").sign({id: 1}, 's0m3f1x3s')
 
 
 chai.use(chaiHttp)
@@ -98,7 +99,7 @@ describe('Bans', () => {
         it('should return changed ban params', done => {
             let id = this.ban.id
             let reason = "new reason"
-            chai.request(app).patch(`/api/bans/${id}`).send({reason})
+            chai.request(app).patch(`/api/bans/${id}`).set('Authorization', 'JWT ' + jwt).send({reason})
             .then(res => {
                 assert.equal(res.status, 200)
                 assert.equal(res.body.status, 'OK')
@@ -111,7 +112,7 @@ describe('Bans', () => {
         it('should actually change ban params', done => {
             let id = this.ban.id
             let reason = "new reason"
-            chai.request(app).patch(`/api/bans/${id}`).send({reason})
+            chai.request(app).patch(`/api/bans/${id}`).set('Authorization', 'JWT ' + jwt).send({reason})
             .then(res => {
                 return Ban.findById(id)
             })
@@ -125,7 +126,7 @@ describe('Bans', () => {
         it('should unban if provided', done => {
             let id = this.ban.id
             let unbanned = 1
-            chai.request(app).patch(`/api/bans/${id}`).send({unbanned})
+            chai.request(app).patch(`/api/bans/${id}`).set('Authorization', 'JWT ' + jwt).send({unbanned})
             .then(res => {
                 assert.equal(res.body.ban.reason, this.ban.reason)
                 assert.equal(res.body.ban.unbanned, unbanned)

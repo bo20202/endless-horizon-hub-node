@@ -1,8 +1,10 @@
-const Sequelize = require('sequelize')
-const config = require('./db_config')
-
-
-let db = new Sequelize(config.database, config.username, config.password, {
+const fs = require("fs")
+const path = require("path")
+const Sequelize = require("sequelize")
+const env = process.env.NODE_ENV || 'development'
+const config = require(path.resolve("src/lib/db/config"))
+ 
+module.exports = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
     define: {
@@ -24,5 +26,3 @@ let db = new Sequelize(config.database, config.username, config.password, {
         }
     }
 })
-
-module.exports = db

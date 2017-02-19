@@ -1,4 +1,5 @@
-const models = require("../models")
+const path = require("path")
+const models = require(path.resolve("src/models"))
 const Ban = models.ban
 const Player = models.player
 
